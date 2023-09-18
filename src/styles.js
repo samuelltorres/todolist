@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+import {
+	FiPlusCircle,
+	FiTrash2,
+	FiCircle,
+	FiCheckCircle
+} from 'react-icons/fi';
+
 export const Container = styled.div`
 	background-color: #202020;
 	width: 100vw;
@@ -22,6 +29,7 @@ export const ToDoList = styled.div`
 	padding: 30px 20px;
 	border-radius: 8px;
 	box-shadow: 0px 0px 36px 0px rgba(0, 0, 0, 0.3);
+	min-width: 540px;
 
 	ul {
 		padding: 0;
@@ -122,10 +130,12 @@ export const ListItem = styled.div`
 	border-radius: 8px;
 	border: 1px solid #333;
 	background: #1a1a1a;
+	opacity: ${(props) => (props.isFinished ? '0.7' : '1')};
+	text-decoration: ${(props) => (props.isFinished ? 'line-through' : 'none')};
 	color: #e5e5e5;
 	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
 
-	padding: 0 10px;
+	padding: 0 20px;
 	height: 60px;
 	width: 500px;
 	margin-bottom: 20px;
@@ -136,5 +146,24 @@ export const ListItem = styled.div`
 
 	li {
 		list-style: none;
+		overflow: hidden;
 	}
+`;
+
+export const Trash = styled(FiTrash2)`
+	cursor: pointer;
+`;
+export const Add = styled(FiPlusCircle)`
+	cursor: pointer;
+`;
+export const UncheckCircle = styled(FiCircle)`
+	cursor: pointer;
+`;
+export const CheckCircle = styled(FiCheckCircle)`
+	cursor: pointer;
+`;
+
+export const NoItems = styled.h3`
+	text-align: center;
+	color: #757575;
 `;

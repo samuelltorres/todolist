@@ -7,21 +7,40 @@ import {
 	Button,
 	Titulo,
 	Info,
-	ListItem
+	ListItem,
+	Trash,
+	Add,
+	CheckCircle,
+	UncheckCircle,
+	NoItems
 } from './styles';
-import { FiPlusCircle, FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 
 function App() {
-	const [list, setList] = useState([{ id: uuid(), task: 'nada' }]);
+	const [list, setList] = useState([]);
 	const [inputTask, setInputTask] = useState('');
 
 	function inputChange(event) {
 		setInputTask(event.target.value);
-		console.log(inputTask);
 	}
 
-	function buttonClick() {
-		setList([...list, { id: uuid(), task: inputTask }]);
+	function addTask() {
+		if (inputTask) {
+			setList([...list, { id: uuid(), task: inputTask, finished: false }]);
+		} else {
+			alert('Adicione uma tarefa.');
+		}
+	}
+
+	function finishedTask(id) {
+		const newList = list.map((item) =>
+			item.id === id ? { ...item, finished: !item.finished } : item
+		);
+		setList(newList);
+	}
+
+	function removeTask(id) {
+		const newList = list.filter((item) => item.id !== id);
+		setList(newList);
 	}
 
 	return (
@@ -35,20 +54,28 @@ function App() {
 							type="text"
 							placeholder="Adicione uma nova tarefa"
 						/>
-						<Button onClick={buttonClick}>
+						<Button onClick={addTask}>
 							Criar
-							<FiPlusCircle />
+							<Add />
 						</Button>
 					</Info>
 
 					<ul>
-						{list.map((task) => (
-							<ListItem>
-								<FiCheckCircle />
-								<li key={task.id}>{task.task}</li>
-								<FiTrash2 />
-							</ListItem>
-						))}
+						{list.length ? (
+							list.map((task) => (
+								<ListItem key={task.id} isFinished={task.finished}>
+									{task.finished ? (
+										<CheckCircle onClick={() => finishedTask(task.id)} />
+									) : (
+										<UncheckCircle onClick={() => finishedTask(task.id)} />
+									)}
+									<li>{task.task}</li>
+									<Trash onClick={() => removeTask(task.id)} />
+								</ListItem>
+							))
+						) : (
+							<NoItems> Não há itens na lista</NoItems>
+						)}
 					</ul>
 				</ToDoList>
 			</Container>
